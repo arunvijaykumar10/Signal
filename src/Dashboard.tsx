@@ -750,13 +750,13 @@ const Dashboard = () => {
         {/* Header */}
         <header className="bg-white p-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center space-x-4">
-            {/* General Moto Dropdown */}
+            {/* General Motors Dropdown */}
             <div className="relative">
               <button
                 className="flex items-center px-3 py-2 bg-white border rounded-md shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
-                General Moto
+                General Motors
                 <ChevronDown size={16} className="ml-2 text-gray-500" />
               </button>
 

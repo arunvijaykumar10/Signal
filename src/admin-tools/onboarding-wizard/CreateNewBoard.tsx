@@ -21,20 +21,28 @@ const CreateNewBoard = () => {
       {/* Tabs */}
       <div className="w-full bg-white shadow-sm py-4 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="flex space-x-6 border-b">
-            {tabs.map((tab) => (
-              <button
-                key={tab.name}
-                className={`pb-2 text-sm font-medium ${
-                  activeTab === tab.name
-                    ? "text-indigo-600 border-b-2 border-indigo-600"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-                onClick={() => setActiveTab(tab.name)}
-              >
-                {tab.name}
-              </button>
-            ))}
+          <div className="flex justify-between items-center border-b">
+            {/* Tabs */}
+            <div className="flex flex-grow space-x-6">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.name}
+                  className={`flex-1 pb-2 text-sm font-medium text-center ${
+                    activeTab === tab.name
+                      ? "text-indigo-600 border-b-2 border-indigo-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                  onClick={() => setActiveTab(tab.name)}
+                >
+                  {tab.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Save Button */}
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              Save
+            </button>
           </div>
         </div>
       </div>
