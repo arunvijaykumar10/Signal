@@ -28,7 +28,7 @@ const BrandIdentitySetup = () => {
 
       <div className="bg-white shadow rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          Upload Logo
+          Upload Files
         </h2>
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
           {brandLogo ? (
@@ -48,13 +48,13 @@ const BrandIdentitySetup = () => {
             <div className="flex flex-col items-center">
               <Upload className="h-12 w-12 text-gray-400 mb-3" />
               <p className="text-gray-600 mb-2">
-                Drag and drop your logo file here, or click to browse
+                Drag and drop your files here, or click to browse
               </p>
-              <p className="text-sm text-gray-500 mb-4">
+              {/* <p className="text-sm text-gray-500 mb-4">
                 SVG or PNG recommended (max 2MB)
-              </p>
+              </p> */}
               <label className="px-4 py-2 rounded bg-indigo-600 text-white font-medium cursor-pointer">
-                Select File
+                Select Files
                 <input
                   type="file"
                   className="hidden"

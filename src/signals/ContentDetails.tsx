@@ -27,6 +27,7 @@ import {
 
 const ContentDetailView = () => {
   const [activeTab, setActiveTab] = useState("content");
+  const [sidebarTab, setSidebarTab] = useState<"details" | "qa">("details");
 
   const [validationScore] = useState({
     tone: 86,
@@ -211,8 +212,9 @@ The Brand Team
       <div className="bg-white shadow px-6 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <button className="text-gray-500 hover:text-gray-700"
-            onClick={() => window.history.back()}
+            <button
+              className="text-gray-500 hover:text-gray-700"
+              onClick={() => window.history.back()}
             >
               <ArrowLeft size={20} />
             </button>
@@ -308,6 +310,9 @@ The Brand Team
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                   <h2 className="font-medium text-gray-800">Email Content</h2>
                   <div className="flex space-x-2">
+                    <label className="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
+                      Waiting for Legal
+                    </label>
                     <button className="text-gray-500 hover:text-gray-700 p-1 rounded hover:bg-gray-100">
                       <Eye size={16} />
                     </button>
@@ -346,139 +351,178 @@ The Brand Team
                   </div>
                 </div>
               </div>
-
-              {/* Validation Issues */}
-              <div className="mt-6 bg-white rounded-lg shadow overflow-hidden">
-                <div className="bg-white rounded-lg shadow p-4 mb-6">
-                  <h2 className="font-semibold mb-4">QA Scorecard</h2>
-
-                  <div className="grid grid-cols-4 gap-4">
-                    {Object.entries(validationScore).map(
-                      ([category, score]) => (
-                        <div
-                          key={category}
-                          className="bg-gray-50 p-3 rounded border border-gray-200"
-                        >
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm font-medium">
-                              {category.charAt(0).toUpperCase() +
-                                category.slice(1)}
-                            </span>
-                            <span
-                              className={`text-sm font-medium ${
-                                score >= 80
-                                  ? "text-green-600"
-                                  : score >= 60
-                                  ? "text-amber-600"
-                                  : "text-red-600"
-                              }`}
-                            >
-                              {score}/100
-                            </span>
-                          </div>
-
-                          <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div
-                              className={`absolute top-0 left-0 h-full rounded-full ${
-                                score >= 80
-                                  ? "bg-green-500"
-                                  : score >= 60
-                                  ? "bg-amber-500"
-                                  : "bg-red-500"
-                              }`}
-                              style={{ width: `${score}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-
-                  <div className="mt-4 p-3 border-t border-gray-200">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Overall Assessment</span>
-
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-amber-500 mr-2"></div>
-                        <span className="text-sm font-medium">
-                          Needs Minor Revisions
-                        </span>
-                      </div>
-                    </div>
-
-                    <p className="text-sm text-gray-600 mt-2">
-                      This content requires minor adjustments before approval.
-                      The primary concerns are related to tone consistency and
-                      CTA effectiveness.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Sidebar */}
             <div className="w-80 flex-shrink-0">
               <div className="bg-white rounded-lg shadow mb-6">
-                <div className="p-4 border-b border-gray-200">
-                  <h2 className="font-medium text-gray-800">Content Details</h2>
+                <div className="border-b border-gray-200">
+                  <div className="flex">
+                    <button
+                      className={`flex-1 py-3 px-4 text-sm font-medium ${
+                        sidebarTab === "details"
+                          ? "text-indigo-600 border-b-2 border-indigo-600"
+                          : "text-gray-500 hover:text-gray-700"
+                      }`}
+                      onClick={() => setSidebarTab("details")}
+                    >
+                      Content Details
+                    </button>
+                    <button
+                      className={`flex-1 py-3 px-4 text-sm font-medium ${
+                        sidebarTab === "qa"
+                          ? "text-indigo-600 border-b-2 border-indigo-600"
+                          : "text-gray-500 hover:text-gray-700"
+                      }`}
+                      onClick={() => setSidebarTab("qa")}
+                    >
+                      QA Scorecard
+                    </button>
+                  </div>
                 </div>
 
                 <div className="p-4">
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-xs font-medium text-gray-500 uppercase">
-                        Last Edited
-                      </h3>
-                      <p className="text-sm text-gray-800 mt-1">
-                        {content.lastEdited} by {content.editedBy}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-xs font-medium text-gray-500 uppercase">
-                        Tone Score
-                      </h3>
-                      <div className="flex items-center mt-1">
-                        <div className="flex-1 bg-gray-200 rounded-full h-2">
-                          <div
-                            className="bg-indigo-600 h-2 rounded-full"
-                            style={{ width: `${content.toneScore}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-sm font-medium text-indigo-600 ml-2">
-                          {content.toneScore}/100
-                        </span>
+                  {sidebarTab === "details" ? (
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-xs font-medium text-gray-500 uppercase">
+                          Last Edited
+                        </h3>
+                        <p className="text-sm text-gray-800 mt-1">
+                          {content.lastEdited} by {content.editedBy}
+                        </p>
                       </div>
-                    </div>
 
-                    <div>
-                      <h3 className="text-xs font-medium text-gray-500 uppercase">
-                        Approval Status
-                      </h3>
-                      <p className="text-sm text-gray-800 mt-1">
-                        {content.approvalStage}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-xs font-medium text-gray-500 uppercase">
-                        Tags
-                      </h3>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                        {content.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                          >
-                            {tag}
+                      <div>
+                        <h3 className="text-xs font-medium text-gray-500 uppercase">
+                          Tone Score
+                        </h3>
+                        <div className="flex items-center mt-1">
+                          <div className="flex-1 bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-indigo-600 h-2 rounded-full"
+                              style={{ width: `${content.toneScore}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-sm font-medium text-indigo-600 ml-2">
+                            {content.toneScore}/100
                           </span>
-                        ))}
-                        <button className="px-2 py-1 border border-dashed border-gray-300 text-gray-500 text-xs rounded-full">
-                          + Add
-                        </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xs font-medium text-gray-500 uppercase">
+                          Approval Status
+                        </h3>
+                        <p className="text-sm text-gray-800 mt-1">
+                          {content.approvalStage}
+                        </p>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xs font-medium text-gray-500 uppercase">
+                          Tags
+                        </h3>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {content.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                          <button className="px-2 py-1 border border-dashed border-gray-300 text-gray-500 text-xs rounded-full">
+                            + Add
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div>
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        {Object.entries(validationScore).map(
+                          ([category, score]) => (
+                            <div
+                              key={category}
+                              className="bg-gray-50 p-3 rounded border border-gray-200"
+                            >
+                              <div className="flex justify-between items-center mb-1">
+                                <span className="text-xs font-medium">
+                                  {category.charAt(0).toUpperCase() +
+                                    category.slice(1)}
+                                </span>
+                                <span
+                                  className={`text-xs font-medium ${
+                                    score >= 80
+                                      ? "text-green-600"
+                                      : score >= 60
+                                      ? "text-amber-600"
+                                      : "text-red-600"
+                                  }`}
+                                >
+                                  {score}/100
+                                </span>
+                              </div>
+
+                              <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div
+                                  className={`absolute top-0 left-0 h-full rounded-full ${
+                                    score >= 80
+                                      ? "bg-green-500"
+                                      : score >= 60
+                                      ? "bg-amber-500"
+                                      : "bg-red-500"
+                                  }`}
+                                  style={{ width: `${score}%` }}
+                                ></div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+
+                      {/* <div className="mb-4 p-3 border border-gray-200 rounded-md"> */}
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">Overall Assessment</span>
+                      </div>
+
+                      <p className="text-sm text-gray-600 mt-2">
+                        This content requires minor adjustments before approval.
+                        The primary concerns are related to tone consistency and
+                        CTA effectiveness.
+                      </p>
+                      {/* </div> */}
+
+                      {/* <div className="space-y-3">
+                        {content.validationIssues.map((issue) => (
+                          <div
+                            key={issue.id}
+                            className={`flex items-start p-3 rounded-md text-xs ${
+                              issue.severity === "High"
+                                ? "bg-red-50 text-red-800"
+                                : "bg-yellow-50 text-yellow-800"
+                            }`}
+                          >
+                            <div className="flex-shrink-0 mt-0.5">
+                              <AlertTriangle
+                                size={14}
+                                className={
+                                  issue.severity === "High"
+                                    ? "text-red-500"
+                                    : "text-yellow-500"
+                                }
+                              />
+                            </div>
+                            <div className="ml-2">
+                              <p className="font-medium">{issue.type} Issue</p>
+                              <p>{issue.description}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div> */}
+                    </div>
+                  )}
                 </div>
               </div>
 

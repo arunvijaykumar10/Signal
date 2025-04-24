@@ -213,7 +213,7 @@ const GovernanceCenter = () => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5 mb-6">
+                {/* <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5 mb-6">
                   <h3 className="text-gray-800 font-medium mb-3">
                     Applicable Channels
                   </h3>
@@ -227,7 +227,7 @@ const GovernanceCenter = () => {
                       </span>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </div>
             </>
           ) : (

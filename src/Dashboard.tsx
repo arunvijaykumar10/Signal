@@ -554,16 +554,20 @@ const Dashboard = () => {
                   <ul className="ml-6 mt-1">
                     {item === "Dashboard" &&
                       [
+                        // {
+                        //   title: "Overview",
+                        //   path: "/overview",
+                        // },
                         {
-                          title: "Overview",
-                          path: "/overview",
+                          title: "User Dashboard",
+                          path: "/userdashboard",
                         },
                         {
-                          title: "Drift",
+                          title: "Strategist",
                           path: "/drift",
                         },
                         {
-                          title: "Analytics",
+                          title: "Project Manager",
                           path: "/analytics",
                         },
                       ].map((subItem) => (

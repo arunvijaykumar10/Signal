@@ -4,9 +4,13 @@ import ToneAndGovernanceSetup from "./ToneAndGovernanceSetup";
 import GovernanceCenter from "../../memory-zone/GovernanceCenterSimple";
 import PromptLibrary from "../../memory-zone/PromptLibraryFixed";
 import SnippetManager from "../../memory-zone/SnippetManager";
+import RoleBasedAccessControl from "../access-control/RoleBasedAccessControl";
+import UserInvites from "./UserInvites";
 
 const CreateNewBoard = () => {
   const [activeTab, setActiveTab] = useState("Brand Identity");
+  const [isSaving, setIsSaving] = useState(false); // State for loading
+  const [saveCompleted, setSaveCompleted] = useState(false); // State for save completion
 
   const tabs = [
     { name: "Brand Identity", component: <BrandIdentitySetup /> },
@@ -14,7 +18,17 @@ const CreateNewBoard = () => {
     { name: "Governance Center", component: <GovernanceCenter /> },
     { name: "Prompt Library", component: <PromptLibrary /> },
     { name: "Snippet Manager", component: <SnippetManager /> },
+    { name: "User Invite", component: <UserInvites /> },
   ];
+
+  const handleSave = () => {
+    setIsSaving(true); // Start loading
+    setSaveCompleted(false); // Reset save completion state
+    setTimeout(() => {
+      setIsSaving(false); // Stop loading after 2 seconds
+      setSaveCompleted(true); // Mark save as completed
+    }, 2000); // Simulate a save operation
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -40,11 +54,52 @@ const CreateNewBoard = () => {
             </div>
 
             {/* Save Button with icon */}
-            <button className="flex items-center px-4 py-2 mb-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              Save Changes
+            <button
+              className="flex items-center px-4 py-2 mb-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={handleSave}
+              disabled={isSaving} // Disable button while saving
+            >
+              {isSaving ? (
+                <svg
+                  className="animate-spin w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+              ) : saveCompleted ? (
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              ) : null}
+              {isSaving
+                ? "Saving..."
+                : saveCompleted
+                ? "Changes Saved"
+                : "Save Changes"}
             </button>
           </div>
         </div>

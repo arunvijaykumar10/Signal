@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, Save, UserPlus, Filter, Info, X } from "lucide-react";
 
-const RoleBasedAccessControl = () => {
+const UserInvites = () => {
   const [selectedUser, setSelectedUser] = useState<{
     id: number;
     name: string;
@@ -132,102 +132,102 @@ const RoleBasedAccessControl = () => {
 
       {/* Add User Modal */}
       {showAddUserModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-            <div className="flex justify-between items-center p-6 border-b">
-              <h3 className="text-lg font-medium text-gray-900">
-                Add New User
-              </h3>
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl border border-gray-200 overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex justify-between items-center p-6 border-b border-gray-100 bg-gradient-to-r from-indigo-50 to-blue-50">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  Add Users
+                </h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  Add new users and assign roles
+                </p>
+              </div>
               <button
-                className="text-gray-400 hover:text-gray-500"
+                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
                 onClick={() => setShowAddUserModal(false)}
               >
-                <X size={20} />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
+            {/* Modal Content */}
             <div className="p-6">
-              <form>
-                {/* Bulk email input */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email Address
-                  </label>
-                  <textarea
-                    className="w-full border rounded-md p-2 h-24 text-sm"
-                    placeholder="Enter email addresses separated by commas or new lines"
-                  ></textarea>
-                  <p className="text-xs text-gray-500 mt-1">
-                    You can invite multiple users at once
-                  </p>
-                </div>
+              {/* Email Input Section */}
 
-                {/* Role selector */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Assign Role
-                  </label>
-                  <select className="w-full border rounded-md p-2 text-sm">
-                    <option value="">Select role for all users</option>
-                    {roles.map((role) => (
-                      <option key={role} value={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
+              {/* Users List with Role Assignment */}
+              <div className="mb-6">
+                <div className="space-y-2">
+                  {[
+                    "Sarah Johnson",
+                    "Amanda Patel",
+                    "David Smith",
+                    "Emily Turner",
+                  ].map((email, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 transition-colors group"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="relative">
+                          <div className="flex-shrink-0 h-9 w-9 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-medium">
+                            {email[0].toUpperCase()}
+                          </div>
+                          <span className="absolute -bottom-1 -right-1 bg-green-400 border-2 border-white rounded-full w-3 h-3"></span>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {email}
+                          </p>
+                          <p className="text-xs text-gray-500">New user</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <select
+                          className="text-sm bg-white border-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500 shadow-sm py-1.5 pr-8"
+                          defaultValue="Copywriter"
+                        >
+                          {roles.map((role) => (
+                            <option key={role} value={role}>
+                              {role}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          type="button"
+                          className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-opacity"
+                        ></button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Welcome note */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Welcome Note (Optional)
-                  </label>
-                  <textarea
-                    className="w-full border rounded-md p-2 h-20 text-sm"
-                    placeholder="Add a personalized message to the invite email"
-                  ></textarea>
-                </div>
+              {/* Custom Message */}
+            </div>
 
-                {/* License info */}
-                <div className="flex items-center p-3 bg-blue-50 rounded-md mb-4">
-                  <Info
-                    size={16}
-                    className="text-blue-500 mr-2 flex-shrink-0"
-                  />
-                  <p className="text-xs text-blue-700">
-                    You're currently using 5 of 10 available licenses. Adding
-                    these users will consume additional licenses.
-                  </p>
-                </div>
-
-                {/* Preview section */}
-                <div className="bg-gray-50 p-3 rounded-md mb-6">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">
-                    Preview
-                  </h4>
-                  <p className="text-xs text-gray-600">
-                    You're inviting <span className="font-medium">3 users</span>{" "}
-                    as <span className="font-medium">Copywriters</span>
-                  </p>
-                </div>
-
-                {/* Buttons */}
-                <div className="flex justify-end space-x-3">
-                  <button
-                    type="button"
-                    className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                    onClick={() => setShowAddUserModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    className="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700"
-                  >
-                    Send Invites
-                  </button>
-                </div>
-              </form>
+            {/* License Info */}
+            {/* Footer */}
+            <div className="flex justify-end items-center p-6 border-t space-x-3">
+              <button
+                type="button"
+                className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={() => setShowAddUserModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm transition-colors duration-150"
+                onClick={() => {
+                  // Add user logic here
+                  console.log("User added:", selectedUser);
+                  setShowAddUserModal(false);
+                }}
+              >
+                Add User
+              </button>
             </div>
           </div>
         </div>
@@ -517,4 +517,4 @@ const RoleBasedAccessControl = () => {
   );
 };
 
-export default RoleBasedAccessControl;
+export default UserInvites;

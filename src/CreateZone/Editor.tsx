@@ -249,7 +249,7 @@ If you have any questions, our support team is here to help.`);
           </div>
 
           <div className="p-4 border-t border-gray-200">
-            <h2 className="font-medium mb-3">Prompt History</h2>
+            <h2 className="font-medium mb-3">Draft History</h2>
             <div className="space-y-3">
               {promptHistory.map((item, idx) => (
                 <div

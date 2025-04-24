@@ -42,6 +42,8 @@ import AuditTrailView from "../analytics/AuditTrails";
 import ContentManagementWorkspace from "../signals/Signals";
 import UsageDashboard from "../analytics/UsageDashboard";
 import ContentDetailView from "../signals/ContentDetails";
+import UserDashboard from "../analytics/UserDashboard";
+import UserInvites from "../admin-tools/onboarding-wizard/UserInvites";
 
 const Main = () => {
   return (
@@ -82,6 +84,7 @@ const Main = () => {
           <Route path="settings" element={<UserProfileWireframe />} />
           {/* Analytics */}
           <Route path="analytics" element={<UsageDashboard />} />
+          <Route path="userdashboard" element={<UserDashboard />} />
           <Route path="analytics/audittrail" element={<AuditTrailView />} />
 
           {/* Admin Tools */}
@@ -115,6 +118,10 @@ const Main = () => {
           <Route
             path="admintools/access"
             element={<RoleBasedAccessControl />}
+          />
+          <Route
+            path="userinvites"
+            element={<UserInvites />}
           />
           <Route path="admintools/access/wizard" element={<CreateNewBoard />} />
           <Route
