@@ -104,7 +104,7 @@ If you have any questions, our support team is here to help.`);
           </button>
           <button
             className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center"
-            onClick={() => navigate("/dashboard/createzone/visualstudio")}
+            onClick={() => navigate("/dashboard/signals/contentmanagement")}
           >
             <Send size={16} className="mr-1.5" />
             Send for Review
