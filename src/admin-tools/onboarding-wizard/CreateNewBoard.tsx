@@ -17,20 +17,20 @@ const CreateNewBoard = () => {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Tabs */}
-      <div className="w-full bg-white shadow-sm py-4 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center border-b">
-            {/* Tabs */}
-            <div className="flex flex-grow space-x-6">
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Header with Tabs */}
+      <div className="w-full bg-white shadow-md">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex justify-between items-end">
+            {/* Pills-style Tabs */}
+            <div className="flex space-x-2 mt-4">
               {tabs.map((tab) => (
                 <button
                   key={tab.name}
-                  className={`flex-1 pb-2 text-sm font-medium text-center ${
+                  className={`px-4 py-2 rounded-t-lg text-sm font-medium transition-all ${
                     activeTab === tab.name
-                      ? "text-indigo-600 border-b-2 border-indigo-600"
-                      : "text-gray-500 hover:text-gray-700"
+                      ? "bg-white text-blue-600 border-t-2 border-x-2 border-gray-200 shadow-sm"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                   }`}
                   onClick={() => setActiveTab(tab.name)}
                 >
@@ -39,17 +39,24 @@ const CreateNewBoard = () => {
               ))}
             </div>
 
-            {/* Save Button */}
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              Save
+            {/* Save Button with icon */}
+            <button className="flex items-center px-4 py-2 mb-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Save Changes
             </button>
           </div>
         </div>
       </div>
 
-      {/* Tab Content */}
-      <div className="flex-1 max-w-6xl mx-auto py-6 px-6">
-        {tabs.find((tab) => tab.name === activeTab)?.component}
+      {/* Tab Content with Card-style container */}
+      <div className="flex-1 max-w-6xl w-full mx-auto p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="p-6">
+            {tabs.find((tab) => tab.name === activeTab)?.component}
+          </div>
+        </div>
       </div>
     </div>
   );
