@@ -1,15 +1,7 @@
 import { useState } from "react";
-import {
-  ChevronRight,
-  Check,
-  AlertCircle,
-  Plus,
-  X,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { AlertCircle, Plus, X } from "lucide-react";
 
 const ToneAndGovernanceSetup = () => {
-  const navigate = useNavigate();
   const [toneFormality, setToneFormality] = useState(50);
   const [toneConfidence, setToneConfidence] = useState(70);
   const [toneTechnical, setToneTechnical] = useState(30);
@@ -43,53 +35,6 @@ const ToneAndGovernanceSetup = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Progress tracker */}
-      <div className="w-full bg-white shadow-sm py-4 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center text-sm text-gray-500">
-            <div className="flex items-center">
-              <div className="bg-green-600 text-white flex items-center justify-center w-6 h-6 rounded-full">
-                <Check className="h-4 w-4" />
-              </div>
-              <span className="ml-2 font-medium text-green-600">
-                Brand Identity
-              </span>
-            </div>
-            <ChevronRight className="mx-3 h-4 w-4 text-gray-400" />
-            <div className="flex items-center">
-              <div className="bg-indigo-600 text-white flex items-center justify-center w-6 h-6 rounded-full">
-                <span>2</span>
-              </div>
-              <span className="ml-2 font-medium text-indigo-600">
-                Tone & Governance
-              </span>
-            </div>
-            <ChevronRight className="mx-3 h-4 w-4 text-gray-400" />
-            <div className="flex items-center">
-              <div className="bg-gray-200 flex items-center justify-center w-6 h-6 rounded-full">
-                <span>3</span>
-              </div>
-              <span className="ml-2">Prompt Import</span>
-            </div>
-            <ChevronRight className="mx-3 h-4 w-4 text-gray-400" />
-            <div className="flex items-center">
-              <div className="bg-gray-200 flex items-center justify-center w-6 h-6 rounded-full">
-                <span>4</span>
-              </div>
-              <span className="ml-2">Integrations</span>
-            </div>
-            <ChevronRight className="mx-3 h-4 w-4 text-gray-400" />
-            <div className="flex items-center">
-              <div className="bg-gray-200 flex items-center justify-center w-6 h-6 rounded-full">
-                <span>5</span>
-              </div>
-              <span className="ml-2">Team Invites</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main content */}
       <div className="flex-1 max-w-4xl mx-auto w-full p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
@@ -358,25 +303,6 @@ const ToneAndGovernanceSetup = () => {
                 </p>
               </label>
             </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-          <button className="px-4 py-2 border border-gray-300 rounded text-gray-700 font-medium bg-white hover:bg-gray-50">
-            Skip for Now
-          </button>
-          <div className="flex space-x-3">
-            <button className="px-4 py-2 border border-gray-300 rounded text-gray-700 font-medium bg-white hover:bg-gray-50">
-              Back
-            </button>
-            <button
-              className="px-4 py-2 bg-indigo-600 rounded text-white font-medium hover:bg-indigo-700"
-              onClick={() =>
-                navigate("/dashboard/admintools/access/wizard/prompt")
-              }
-            >
-              Next: Prompt Import
-            </button>
           </div>
         </div>
       </div>

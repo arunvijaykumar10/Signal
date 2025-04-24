@@ -19,16 +19,24 @@ import {
   PlusCircle,
   Star,
   X,
+  Signal,
+  Code,
 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import NotificationPopover from "./NotificationPopover";
-import ContentManagementWorkspace from "./signals/Signals";
+import Assistant from "./CreateZone/Assistant";
 
 const Dashboard = () => {
-  const [activeSidebarItem, setActiveSidebarItem] = useState("Overview");
+  const [activeSidebarItem, setActiveSidebarItem] = useState("Dashboard");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isAssistantDrawerOpen, setIsAssistantDrawerOpen] = useState(false); // New state for Assistant Drawer
+
+  const toggleAssistantDrawer = () => {
+    setIsAssistantDrawerOpen(!isAssistantDrawerOpen);
+  };
   const [activeTab, setActiveTab] = useState("recent");
   const [searchQuery, setSearchQuery] = useState("");
   const [pinnedItems, setPinnedItems] = useState([
@@ -195,6 +203,15 @@ const Dashboard = () => {
         aria-label="Open Memory Drawer"
       >
         <Brain className="w-6 h-6" />
+      </button>
+      <button
+        className={`fixed right-0 top-[calc(50%+4rem)] transform -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-green-600 text-white rounded-l-md shadow-md transition hover:bg-green-700 z-10 ${
+          isAssistantDrawerOpen ? "hidden" : "flex"
+        }`}
+        onClick={toggleAssistantDrawer}
+        aria-label="Open Assistant Drawer"
+      >
+        <Wand2 className="w-6 h-6" />
       </button>
 
       {/* Semantic Memory Drawer */}
@@ -476,6 +493,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-md">
         <div className="p-4 border-b">
@@ -485,12 +503,12 @@ const Dashboard = () => {
         <nav className="p-2">
           <ul>
             {[
-              "Home",
-              "Overview",
-              "Create Zone",
-              "Memory Zone",
+              // "Home",
+              "Dashboard",
+              "Visual Studio",
+              // "Memory Zone",
               "Publish Zone",
-              "Analytics",
+              // "Analytics",
               "Admin Tools",
               "Signals",
             ].map((item) => (
@@ -503,16 +521,18 @@ const Dashboard = () => {
                   }`}
                   onClick={() => {
                     setActiveSidebarItem(item);
-                    if (item === "Home") navigate("/dashboard");
-                    if (item === "Overview") navigate("/dashboard/overview");
+                    if (item === "Visual Studio") {
+                      navigate("visualstudio");
+                    }
+                    if (item === "Signals") {
+                      navigate("signals/contentmanagement");
+                    }
                   }}
                 >
-                  {item === "Home" && <Home size={18} className="mr-2" />}
-                  {item === "Overview" && (
-                    <BarChart size={18} className="mr-2" />
-                  )}
-                  {item === "Create Zone" && (
-                    <Send size={18} className="mr-2" />
+                  {/* {item === "Home" && <Home size={18} className="mr-2" />} */}
+                  {item === "Dashboard" && <Home size={18} className="mr-2" />}
+                  {item === "Visual Studio" && (
+                    <Code size={18} className="mr-2" />
                   )}
                   {item === "Memory Zone" && (
                     <Brain size={18} className="mr-2" />
@@ -526,30 +546,26 @@ const Dashboard = () => {
                   {item === "Admin Tools" && (
                     <Settings size={18} className="mr-2" />
                   )}
+                  {item === "Signals" && <Signal size={18} className="mr-2" />}
                   {item}
                 </button>
 
-                {item !== "Overview" && activeSidebarItem === item && (
+                {activeSidebarItem === item && (
                   <ul className="ml-6 mt-1">
-                    {item === "Create Zone" &&
+                    {item === "Dashboard" &&
                       [
                         {
-                          title: "Launcher",
-                          path: "/createzone/launcher",
+                          title: "Overview",
+                          path: "/overview",
                         },
                         {
-                          title: "Editor",
-                          path: "/createzone/editor",
+                          title: "Drift",
+                          path: "/drift",
                         },
                         {
-                          title: "Visual Studio",
-                          path: "/createzone/visualstudio",
+                          title: "Analytics",
+                          path: "/analytics",
                         },
-                        {
-                          title: "Validator",
-                          path: "/createzone/validator",
-                        },
-                        { title: "Assistant", path: "/createzone/assistant" },
                       ].map((subItem) => (
                         <li key={subItem.title} className="mb-1">
                           <button
@@ -563,7 +579,7 @@ const Dashboard = () => {
                         </li>
                       ))}
 
-                    {item === "Memory Zone" &&
+                    {/* {item === "Memory Zone" &&
                       [
                         {
                           title: "Semantic Engine",
@@ -593,7 +609,7 @@ const Dashboard = () => {
                             {subItem.title}
                           </button>
                         </li>
-                      ))}
+                      ))} */}
 
                     {item === "Publish Zone" &&
                       [
@@ -626,7 +642,7 @@ const Dashboard = () => {
                         </li>
                       ))}
 
-                    {item === "Analytics" &&
+                    {/* {item === "Analytics" &&
                       [
                         {
                           title: "Usage Dashboard",
@@ -647,18 +663,18 @@ const Dashboard = () => {
                             {subItem.title}
                           </button>
                         </li>
-                      ))}
+                      ))} */}
 
                     {item === "Admin Tools" &&
                       [
-                        {
-                          title: "Memory Management",
-                          path: "/admintools/memorymanageement",
-                        },
-                        {
-                          title: "Team Management",
-                          path: "/admintools/team",
-                        },
+                        // {
+                        //   title: "Memory Management",
+                        //   path: "/admintools/memorymanageement",
+                        // },
+                        // {
+                        //   title: "Team Management",
+                        //   path: "/admintools/team",
+                        // },
                         {
                           title: "AI Config",
                           path: "/admintools/aiconfig",
@@ -679,7 +695,7 @@ const Dashboard = () => {
                           </button>
                         </li>
                       ))}
-                    {item === "Signals" &&
+                    {/* {item === "Signals" &&
                       [
                         {
                           title: "Content Management",
@@ -696,7 +712,7 @@ const Dashboard = () => {
                             {subItem.title}
                           </button>
                         </li>
-                      ))}
+                      ))} */}
                   </ul>
                 )}
               </li>
@@ -704,31 +720,90 @@ const Dashboard = () => {
           </ul>
         </nav>
       </div>
-
+      <div
+        className={`fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-20 ${
+          isAssistantDrawerOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <div className="flex items-center">
+              <Wand2 className="w-5 h-5 text-green-600 mr-2" />
+              <h2 className="text-lg font-medium text-gray-800">Assistant</h2>
+            </div>
+            <button
+              className="text-gray-500 hover:text-gray-700"
+              onClick={toggleAssistantDrawer}
+              aria-label="Close Assistant Drawer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          {/* Render Assistant Component */}
+          <div className="flex-1 overflow-y-auto p-4">
+            <Assistant />
+          </div>
+        </div>
+      </div>
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         {/* Header */}
         <header className="bg-white p-4 flex items-center justify-between shadow-sm">
-          <div className="relative w-64">
-            <Search
-              size={18}
-              className="absolute left-2 top-2.5 text-gray-400"
-            />
-            <input
-              type="text"
-              placeholder="Search snippets, prompts, campaigns..."
-              className="pl-9 pr-4 py-2 w-full border rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
+          <div className="flex items-center space-x-4">
+            {/* General Moto Dropdown */}
+            <div className="relative">
+              <button
+                className="flex items-center px-3 py-2 bg-white border rounded-md shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                General Moto
+                <ChevronDown size={16} className="ml-2 text-gray-500" />
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
+                  <ul>
+                    <li
+                      className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        navigate("/dashboard/admintools/access/wizard");
+                        setDropdownOpen(false); // Close the dropdown
+                      }}
+                    >
+                      <PlusCircle size={16} className="mr-2 text-indigo-500" />
+                      Create New Board
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            {/* Edit Button */}
+            <div>
+              <button
+                className="flex items-center px-3 py-2 bg-white border rounded-md shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                onClick={() => navigate("/dashboard/admintools/access/wizard")}
+              >
+                <Settings size={16} className="mr-1" />
+                Edit
+              </button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="relative w-64">
+              <Search
+                size={18}
+                className="absolute left-2 top-2.5 text-gray-400"
+              />
+              <input
+                type="text"
+                placeholder="Search snippets, prompts, campaigns..."
+                className="pl-9 pr-4 py-2 w-full border rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button
-              className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition"
-              onClick={() => navigate("/dashboard/admintools/access/wizard")}
-            >
-              <Wand2 className="w-4 h-4 mr-2" />
-              Onboarding Wizard
-            </button>
             <NotificationPopover />
 
             <div

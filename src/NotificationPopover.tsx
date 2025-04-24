@@ -7,6 +7,7 @@ import {
   MessageSquare,
   Settings,
   Clock,
+  X,
 } from "lucide-react";
 
 const NotificationPopover = () => {
@@ -166,6 +167,12 @@ const NotificationPopover = () => {
               </button>
               <button className="text-gray-500 hover:text-gray-700">
                 <Settings className="h-5 w-5" />
+              </button>
+              <button
+                className="text-gray-500 hover:text-gray-700"
+                onClick={() => setIsOpen(false)}
+              >
+                <X className="h-5 w-5 text-gray-500" />
               </button>
             </div>
           </div>

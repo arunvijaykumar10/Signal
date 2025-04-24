@@ -532,25 +532,6 @@ const IntegrationSetup = () => {
             </div>
           </div>
         )}
-
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-          <button className="px-4 py-2 border border-gray-300 rounded text-gray-700 font-medium bg-white hover:bg-gray-50">
-            Skip for Now
-          </button>
-          <div className="flex space-x-3">
-            <button className="px-4 py-2 border border-gray-300 rounded text-gray-700 font-medium bg-white hover:bg-gray-50">
-              Back
-            </button>
-            <button
-              className="px-4 py-2 bg-indigo-600 rounded text-white font-medium hover:bg-indigo-700"
-              onClick={() =>
-                navigate("/dashboard/admintools/access/wizard/teaminvites")
-              }
-            >
-              Next: Team Invites
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
