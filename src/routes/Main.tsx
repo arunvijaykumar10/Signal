@@ -27,7 +27,7 @@ import TeamManagement from "../admin-tools/team/TeamManagement";
 import CLISDKPanel from "../public-zone/SDK";
 import SystemOverview from "../SystemOverview";
 import RoleBasedAccessControl from "../admin-tools/access-control/RoleBasedAccessControl";
-import BrandIdentitySetup from "../admin-tools/onboarding-wizard/BrandIdentitySetup";
+import CreateNewBoard from "../admin-tools/onboarding-wizard/CreateNewBoard";
 import ToneAndGovernanceSetup from "../admin-tools/onboarding-wizard/ToneAndGovernanceSetup";
 import PromptSnippetImport from "../admin-tools/onboarding-wizard/PromptSnippetImport";
 import IntegrationSetup from "../admin-tools/onboarding-wizard/IntegrationSetup";
@@ -54,9 +54,9 @@ const Main = () => {
           <Route index element={<DashboardContent />} />
           <Route path="overview" element={<SystemOverview />} />
           {/* Creatzone */}
-          <Route path="createzone/launcher" element={<Launcher />} />
+          <Route path="launcher" element={<Launcher />} />
           <Route path="createzone/editor" element={<Editor />} />
-          <Route path="createzone/visualstudio" element={<VisualStudio />} />
+          <Route path="visualstudio" element={<VisualStudio />} />
           <Route path="createzone/validator" element={<Validator />} />
           <Route path="createzone/assistant" element={<Assistant />} />
           {/* Memoryzone */}
@@ -67,7 +67,7 @@ const Main = () => {
           <Route path="memoryzone/governance" element={<GovernanceCenter />} />
           <Route path="memoryzone/prompts" element={<PromptLibrary />} />
           <Route path="memoryzone/snippets" element={<SnippetManager />} />
-          <Route path="memoryzone/drift" element={<DriftInsightDashboard />} />
+          <Route path="drift" element={<DriftInsightDashboard />} />
           {/* PubliceZone */}
           <Route path="publishzone/export" element={<SignalExportHub />} />
           <Route
@@ -81,7 +81,7 @@ const Main = () => {
           />
           <Route path="settings" element={<UserProfileWireframe />} />
           {/* Analytics */}
-          <Route path="analytics/usagedashboard" element={<UsageDashboard />} />
+          <Route path="analytics" element={<UsageDashboard />} />
           <Route path="analytics/audittrail" element={<AuditTrailView />} />
 
           {/* Admin Tools */}
@@ -116,10 +116,7 @@ const Main = () => {
             path="admintools/access"
             element={<RoleBasedAccessControl />}
           />
-          <Route
-            path="admintools/access/wizard"
-            element={<BrandIdentitySetup />}
-          />
+          <Route path="admintools/access/wizard" element={<CreateNewBoard />} />
           <Route
             path="admintools/access/wizard/tone"
             element={<ToneAndGovernanceSetup />}
@@ -143,7 +140,7 @@ const Main = () => {
           <Route
             path="signals/contentmanagement"
             element={<ContentManagementWorkspace />}
-          />  
+          />
           <Route
             path="contentmanagement/details"
             element={<ContentDetailView />}
