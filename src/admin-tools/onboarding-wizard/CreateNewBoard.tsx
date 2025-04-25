@@ -4,8 +4,8 @@ import ToneAndGovernanceSetup from "./ToneAndGovernanceSetup";
 import GovernanceCenter from "../../memory-zone/GovernanceCenterSimple";
 import PromptLibrary from "../../memory-zone/PromptLibraryFixed";
 import SnippetManager from "../../memory-zone/SnippetManager";
-import RoleBasedAccessControl from "../access-control/RoleBasedAccessControl";
 import UserInvites from "./UserInvites";
+import { Save } from "lucide-react";
 
 const CreateNewBoard = () => {
   const [activeTab, setActiveTab] = useState("Brand Identity");
@@ -95,6 +95,8 @@ const CreateNewBoard = () => {
                   />
                 </svg>
               ) : null}
+              <Save size={16} className="mr-2" />
+
               {isSaving
                 ? "Saving..."
                 : saveCompleted
