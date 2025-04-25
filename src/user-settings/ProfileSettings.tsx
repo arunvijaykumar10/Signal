@@ -1,4 +1,4 @@
-import { ChevronDown, Save, Settings, Upload, User } from "lucide-react";
+import { ChevronDown, Save, Settings, Upload } from "lucide-react";
 
 const ProfileWireframe = () => {
   return (
@@ -16,7 +16,11 @@ const ProfileWireframe = () => {
         {/* Avatar Section */}
         <div className="flex flex-col items-center">
           <div className="w-32 h-32 bg-gray-200 rounded-full mb-3 flex items-center justify-center text-gray-500 relative">
-            <User size={48} />
+            <img
+              src="/src/SaraJohns.jpeg"
+              alt="User Avatar"
+              className="w-full h-full rounded-full object-cover"
+            />
             <button className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full">
               <Upload size={16} />
             </button>

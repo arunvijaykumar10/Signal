@@ -11,12 +11,12 @@ const VisualStudio = () => {
   // Placeholder images for generated results
   // In a real implementation, these would be dynamically generated
   const [images] = useState([
-    "/api/placeholder/320/320",
-    "/api/placeholder/320/320",
-    "/api/placeholder/320/320",
-    "/api/placeholder/320/320",
-    "/api/placeholder/320/320",
-    "/api/placeholder/320/320",
+    "/src/images/image1.jpeg",
+    "/src/images/image2.jpeg",
+    "/src/images/image3.jpeg",
+    "/src/images/image4.jpeg",
+    "/src/images/image5.jpeg",
+    "/src/images/image6.jpeg",
   ]);
 
   // Brand style options based on wireframe spec
@@ -63,7 +63,8 @@ const VisualStudio = () => {
                   <textarea
                     className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
                     rows={4}
-                    placeholder="Generate an illustration of a happy family using our app..."
+                    placeholder="Generate a friendly robot with glowing eyes and a Google logo in a neon digital world...."
+                    // placeholder="Generate a humanoid robot collaborating with a focused man at a desk, both analyzing data on a glowing laptop in a dimly lit, futuristic office..."
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                   />
