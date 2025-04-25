@@ -159,48 +159,45 @@ const UserInvites = () => {
               {/* Users List with Role Assignment */}
               <div className="mb-6">
                 <div className="space-y-2">
-                  {[
-                    "Sarah Johnson",
-                    "Amanda Patel",
-                    "David Smith",
-                    "Emily Turner",
-                  ].map((email, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 transition-colors group"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div className="relative">
-                          <div className="flex-shrink-0 h-9 w-9 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-medium">
-                            {email[0].toUpperCase()}
+                  {users
+                    .filter((user) =>
+                      [
+                        "Sarah Johnson",
+                        "Amanda Patel",
+                        "David Smith",
+                        "Emily Turner",
+                      ].includes(user.name)
+                    )
+                    .map((user) => (
+                      <div
+                        key={user.id}
+                        className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 transition-colors group"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="relative">
+                            <div className="flex-shrink-0 h-9 w-9 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-medium">
+                              {typeof user.email === "string" &&
+                              user.email.length > 0
+                                ? user.email[0].toUpperCase()
+                                : ""}
+                            </div>
+                            <span className="absolute -bottom-1 -right-1 bg-green-400 border-2 border-white rounded-full w-3 h-3"></span>
                           </div>
-                          <span className="absolute -bottom-1 -right-1 bg-green-400 border-2 border-white rounded-full w-3 h-3"></span>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">
+                              {user.name}
+                            </p>
+                            <p className="text-xs text-gray-500">New user</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            {email}
-                          </p>
-                          <p className="text-xs text-gray-500">New user</p>
+                        <div className="flex items-center space-x-3">
+                          <span className="text-sm text-gray-700">
+                            {user.role}
+                          </span>
+                          <input type="checkbox" />
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <select
-                          className="text-sm bg-white border-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500 shadow-sm py-1.5 pr-8"
-                          defaultValue="Copywriter"
-                        >
-                          {roles.map((role) => (
-                            <option key={role} value={role}>
-                              {role}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          type="button"
-                          className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-opacity"
-                        ></button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
 
@@ -340,19 +337,7 @@ const UserInvites = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {user.email}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <select
-                    className="text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    defaultValue={user.role}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {roles.map((role) => (
-                      <option key={role} value={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{user.role}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {user.lastLogin}
                 </td>

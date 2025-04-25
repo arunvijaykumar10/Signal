@@ -278,11 +278,11 @@ const UserDashboard = () => {
           <div className="bg-white p-4 rounded-lg shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-medium">Activity Over Time</h3>
-              <select className="text-xs border-gray-300 rounded-md">
+              {/* <select className="text-xs border-gray-300 rounded-md">
                 <option>Last 7 weeks</option>
                 <option>Last 30 days</option>
                 <option>Last 90 days</option>
-              </select>
+              </select> */}
             </div>
             <ResponsiveContainer width="100%" height={240}>
               <LineChart data={monthlyActivity}>
@@ -302,16 +302,13 @@ const UserDashboard = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-6 mb-6">
           <div className="bg-white p-4 rounded-lg shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-medium">Published Content by Zone</h3>
-              <select className="text-xs border-gray-300 rounded-md">
+              {/* <select className="text-xs border-gray-300 rounded-md">
                 <option>Last 7 weeks</option>
                 <option>Last 30 days</option>
-              </select>
+              </select> */}
             </div>
             <ResponsiveContainer width="100%" height={240}>
               <AreaChart data={publishedContent}>
@@ -334,17 +331,12 @@ const UserDashboard = () => {
                   fill="#00C49F"
                   stroke="#00C49F"
                 />
-                <Area
-                  type="monotone"
-                  dataKey="publish"
-                  stackId="1"
-                  fill="#FFBB28"
-                  stroke="#FFBB28"
-                />
               </AreaChart>
             </ResponsiveContainer>
           </div>
+        </div>
 
+        <div className="grid grid-cols-2 gap-6 mb-6">
           <div className="bg-white p-4 rounded-lg shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-medium">AI Usage by Module</h3>

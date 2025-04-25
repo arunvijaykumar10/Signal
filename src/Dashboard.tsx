@@ -621,10 +621,10 @@ const Dashboard = () => {
                           title: "Export Hub",
                           path: "/publishzone/export",
                         },
-                        {
-                          title: "Integration",
-                          path: "/publishzone/integration",
-                        },
+                        // {
+                        //   title: "Integration",
+                        //   path: "/publishzone/integration",
+                        // },
                         {
                           title: "CLI/SDK",
                           path: "/publishzone/cli",

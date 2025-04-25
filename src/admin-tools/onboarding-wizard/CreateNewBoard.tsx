@@ -18,7 +18,7 @@ const CreateNewBoard = () => {
     { name: "Governance Center", component: <GovernanceCenter /> },
     { name: "Prompt Library", component: <PromptLibrary /> },
     { name: "Snippet Manager", component: <SnippetManager /> },
-    { name: "User Invite", component: <UserInvites /> },
+    { name: "Add User", component: <UserInvites /> },
   ];
 
   const handleSave = () => {
