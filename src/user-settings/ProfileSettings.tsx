@@ -65,11 +65,11 @@ const ProfileWireframe = () => {
                 <span className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
                   Copywriter
                 </span>
-                <div className="relative ml-3">
+                {/* <div className="relative ml-3">
                   <button className="text-xs text-gray-500 flex items-center">
                     Change <ChevronDown size={14} />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -85,7 +85,7 @@ const ProfileWireframe = () => {
               </select>
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Preferred Language
               </label>
@@ -95,7 +95,7 @@ const ProfileWireframe = () => {
                 <option>Spanish</option>
                 <option>German</option>
               </select>
-            </div>
+            </div> */}
           </div>
 
           <div className="mt-6">

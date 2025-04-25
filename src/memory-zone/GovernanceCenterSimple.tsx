@@ -16,6 +16,8 @@ type ToneRule = {
 
 const GovernanceCenter = () => {
   const [selectedRule, setSelectedRule] = useState<ToneRule | null>(null);
+  const [escalationPreference, setEscalationPreference] =
+    useState("flag-to-legal");
 
   // Sample tone rule data
   const toneRules: ToneRule[] = [
@@ -63,6 +65,8 @@ const GovernanceCenter = () => {
   };
 
   return (
+    <>
+   
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4">
@@ -248,7 +252,74 @@ const GovernanceCenter = () => {
           )}
         </div>
       </div>
+      <div className="bg-white shadow rounded-lg p-6  " >
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Escalation Preference
+        </h2>
+        <p className="text-gray-600 mb-4">
+          Choose what happens when content doesn't meet your tone guidelines or
+          contains restricted words.
+        </p>
+
+        <div className="space-y-4">
+          <div className="flex items-center">
+            <input
+              id="flag-to-legal"
+              name="escalation"
+              type="radio"
+              checked={escalationPreference === "flag-to-legal"}
+              onChange={() => setEscalationPreference("flag-to-legal")}
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+            />
+            <label htmlFor="flag-to-legal" className="ml-3">
+              <div className="text-gray-900 font-medium">Flag to Legal</div>
+              <p className="text-sm text-gray-500">
+                Send to legal team for manual review
+              </p>
+            </label>
+          </div>
+
+          <div className="flex items-center">
+            <input
+              id="auto-correct"
+              name="escalation"
+              type="radio"
+              checked={escalationPreference === "auto-correct"}
+              onChange={() => setEscalationPreference("auto-correct")}
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+            />
+            <label htmlFor="auto-correct" className="ml-3">
+              <div className="text-gray-900 font-medium">
+                Rewrite with Softer Tone
+              </div>
+              <p className="text-sm text-gray-500">
+                Automatically adjust content to comply with guidelines
+              </p>
+            </label>
+          </div>
+
+          <div className="flex items-center">
+            <input
+              id="auto-approve"
+              name="escalation"
+              type="radio"
+              checked={escalationPreference === "auto-approve"}
+              onChange={() => setEscalationPreference("auto-approve")}
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+            />
+            <label htmlFor="auto-approve" className="ml-3">
+              <div className="text-gray-900 font-medium">
+                Auto-approve if Tone Score 80%
+              </div>
+              <p className="text-sm text-gray-500">
+                Only flag severe violations, allow minor deviations
+              </p>
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
+    </>
   );
 };
 

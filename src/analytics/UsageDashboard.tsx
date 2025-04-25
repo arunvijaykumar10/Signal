@@ -276,11 +276,11 @@ const UsageDashboard = () => {
           <div className="bg-white p-4 rounded-lg shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-medium">Activity Over Time</h3>
-              <select className="text-xs border-gray-300 rounded-md">
+              {/* <select className="text-xs border-gray-300 rounded-md">
                 <option>Last 7 weeks</option>
                 <option>Last 30 days</option>
                 <option>Last 90 days</option>
-              </select>
+              </select> */}
             </div>
             <ResponsiveContainer width="100%" height={240}>
               <LineChart data={monthlyActivity}>
@@ -327,10 +327,10 @@ const UsageDashboard = () => {
           <div className="bg-white p-4 rounded-lg shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-medium">Published Content by Zone</h3>
-              <select className="text-xs border-gray-300 rounded-md">
+              {/* <select className="text-xs border-gray-300 rounded-md">
                 <option>Last 7 weeks</option>
                 <option>Last 30 days</option>
-              </select>
+              </select> */}
             </div>
             <ResponsiveContainer width="100%" height={240}>
               <AreaChart data={publishedContent}>
@@ -352,13 +352,6 @@ const UsageDashboard = () => {
                   stackId="1"
                   fill="#00C49F"
                   stroke="#00C49F"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="publish"
-                  stackId="1"
-                  fill="#FFBB28"
-                  stroke="#FFBB28"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -556,10 +549,10 @@ const UsageDashboard = () => {
         <div className="my-6 bg-white p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-medium">AI Performance Insights</h3>
-            <select className="text-xs border-gray-300 rounded-md">
+            {/* <select className="text-xs border-gray-300 rounded-md">
               <option>Last 30 days</option>
               <option>This month</option>
-            </select>
+            </select> */}
           </div>
           <div className="grid grid-cols-4 gap-4">
             <div className="border border-gray-200 rounded-md p-3">
@@ -606,8 +599,6 @@ const UsageDashboard = () => {
             </div>
           </div>
         </div>
-
-
       </main>
     </div>
   );

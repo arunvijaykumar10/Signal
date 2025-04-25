@@ -197,14 +197,14 @@ const ContentManagementWorkspace = () => {
               >
                 Kanban
               </button>
-              <button
+              {/* <button
                 className={`px-3 py-1 ${
                   viewMode === "calendar" ? "bg-gray-100" : "bg-white"
                 }`}
                 onClick={() => setViewMode("calendar")}
               >
                 Calendar
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
