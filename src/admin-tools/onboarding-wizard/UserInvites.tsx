@@ -113,7 +113,7 @@ const UserInvites = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white p-6 rounded-lg shadow">
+    <div>
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
