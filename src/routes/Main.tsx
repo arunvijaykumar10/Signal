@@ -44,117 +44,126 @@ import UsageDashboard from "../analytics/UsageDashboard";
 import ContentDetailView from "../signals/ContentDetails";
 import UserDashboard from "../analytics/UserDashboard";
 import UserInvites from "../admin-tools/onboarding-wizard/UserInvites";
+import { RoleProvider } from "../context/RoleProvider";
 
 const Main = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+    <RoleProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" />} />
 
-        {/* Dashboard Layout with Nested Routes */}
-        <Route path="/dashboard" element={<Dashboard />}>
-          <Route index element={<DashboardContent />} />
-          <Route path="overview" element={<SystemOverview />} />
-          {/* Creatzone */}
-          <Route path="launcher" element={<Launcher />} />
-          <Route path="createzone/editor" element={<Editor />} />
-          <Route path="visualstudio" element={<VisualStudio />} />
-          <Route path="createzone/validator" element={<Validator />} />
-          <Route path="createzone/assistant" element={<Assistant />} />
-          {/* Memoryzone */}
-          <Route
-            path="memoryzone/semanticengine"
-            element={<SemanticMemoryEngine />}
-          />
-          <Route path="memoryzone/governance" element={<GovernanceCenter />} />
-          <Route path="memoryzone/prompts" element={<PromptLibrary />} />
-          <Route path="memoryzone/snippets" element={<SnippetManager />} />
-          <Route path="drift" element={<DriftInsightDashboard />} />
-          {/* PubliceZone */}
-          <Route path="publishzone/export" element={<SignalExportHub />} />
-          <Route
-            path="publishzone/integration"
-            element={<IntegrationLayer />}
-          />
-          <Route path="publishzone/cli" element={<CLISDKPanel />} />
-          <Route
-            path="publishzone/protocol"
-            element={<SignalObjectProtocolViewer />}
-          />
-          <Route path="settings" element={<UserProfileWireframe />} />
-          {/* Analytics */}
-          <Route path="analytics" element={<UsageDashboard />} />
-          <Route path="userdashboard" element={<UserDashboard />} />
-          <Route path="analytics/audittrail" element={<AuditTrailView />} />
+          {/* Dashboard Layout with Nested Routes */}
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route index element={<DashboardContent />} />
+            <Route path="overview" element={<SystemOverview />} />
+            {/* Creatzone */}
+            <Route path="launcher" element={<Launcher />} />
+            <Route path="createzone/editor" element={<Editor />} />
+            <Route path="visualstudio" element={<VisualStudio />} />
+            <Route path="createzone/validator" element={<Validator />} />
+            <Route path="createzone/assistant" element={<Assistant />} />
+            {/* Memoryzone */}
+            <Route
+              path="memoryzone/semanticengine"
+              element={<SemanticMemoryEngine />}
+            />
+            <Route
+              path="memoryzone/governance"
+              element={<GovernanceCenter />}
+            />
+            <Route path="memoryzone/prompts" element={<PromptLibrary />} />
+            <Route path="memoryzone/snippets" element={<SnippetManager />} />
+            <Route path="drift" element={<DriftInsightDashboard />} />
+            {/* PubliceZone */}
+            <Route path="publishzone/export" element={<SignalExportHub />} />
+            <Route
+              path="publishzone/integration"
+              element={<IntegrationLayer />}
+            />
+            <Route path="publishzone/cli" element={<CLISDKPanel />} />
+            <Route
+              path="publishzone/protocol"
+              element={<SignalObjectProtocolViewer />}
+            />
+            <Route path="settings" element={<UserProfileWireframe />} />
+            {/* Analytics */}
+            <Route path="analytics" element={<UsageDashboard />} />
+            <Route path="userdashboard" element={<UserDashboard />} />
+            <Route path="analytics/audittrail" element={<AuditTrailView />} />
 
-          {/* Admin Tools */}
-          <Route
-            path="admintools/memorymanageement"
-            element={<MemoryManagement />}
-          />
-          <Route
-            path="admintools/memorymanageement/memoryoptimization"
-            element={<MemoryOptimizationSettings />}
-          />
-          <Route
-            path="admintools/memorymanageement/manualmemory"
-            element={<ManualMemoryCleanup />}
-          />
-          <Route
-            path="admintools/memorymanageement/retention"
-            element={<DataRetentionExpiry />}
-          />
-          <Route
-            path="admintools/memorymanageement/archivedmemory"
-            element={<ArchivedMemoryVault />}
-          />
-          <Route path="admintools/team" element={<TeamManagement />} />
-          <Route path="admintools/aiconfig" element={<AIConfig />} />
-          <Route path="admintools/aiconfig/settings" element={<AiSettings />} />
-          <Route
-            path="admintools/aiconfig/configure"
-            element={<AiConfigure />}
-          />
-          <Route
-            path="admintools/access"
-            element={<RoleBasedAccessControl />}
-          />
-          <Route
-            path="userinvites"
-            element={<UserInvites />}
-          />
-          <Route path="admintools/access/wizard" element={<CreateNewBoard />} />
-          <Route
-            path="admintools/access/wizard/tone"
-            element={<ToneAndGovernanceSetup />}
-          />
-          <Route
-            path="admintools/access/wizard/prompt"
-            element={<PromptSnippetImport />}
-          />
-          <Route
-            path="admintools/access/wizard/intergations"
-            element={<IntegrationSetup />}
-          />
-          <Route
-            path="admintools/access/wizard/teaminvites"
-            element={<TeamInvitesSetup />}
-          />
-          <Route
-            path="admintools/access/wizard/summary"
-            element={<WorkspaceSummary />}
-          />
-          <Route
-            path="signals/contentmanagement"
-            element={<ContentManagementWorkspace />}
-          />
-          <Route
-            path="contentmanagement/details"
-            element={<ContentDetailView />}
-          />
-        </Route>
-      </Routes>
-    </Router>
+            {/* Admin Tools */}
+            <Route
+              path="admintools/memorymanageement"
+              element={<MemoryManagement />}
+            />
+            <Route
+              path="admintools/memorymanageement/memoryoptimization"
+              element={<MemoryOptimizationSettings />}
+            />
+            <Route
+              path="admintools/memorymanageement/manualmemory"
+              element={<ManualMemoryCleanup />}
+            />
+            <Route
+              path="admintools/memorymanageement/retention"
+              element={<DataRetentionExpiry />}
+            />
+            <Route
+              path="admintools/memorymanageement/archivedmemory"
+              element={<ArchivedMemoryVault />}
+            />
+            <Route path="admintools/team" element={<TeamManagement />} />
+            <Route path="admintools/aiconfig" element={<AIConfig />} />
+            <Route
+              path="admintools/aiconfig/settings"
+              element={<AiSettings />}
+            />
+            <Route
+              path="admintools/aiconfig/configure"
+              element={<AiConfigure />}
+            />
+            <Route
+              path="admintools/access"
+              element={<RoleBasedAccessControl />}
+            />
+            <Route path="userinvites" element={<UserInvites />} />
+            <Route
+              path="admintools/access/wizard"
+              element={<CreateNewBoard />}
+            />
+            <Route
+              path="admintools/access/wizard/tone"
+              element={<ToneAndGovernanceSetup />}
+            />
+            <Route
+              path="admintools/access/wizard/prompt"
+              element={<PromptSnippetImport />}
+            />
+            <Route
+              path="admintools/access/wizard/intergations"
+              element={<IntegrationSetup />}
+            />
+            <Route
+              path="admintools/access/wizard/teaminvites"
+              element={<TeamInvitesSetup />}
+            />
+            <Route
+              path="admintools/access/wizard/summary"
+              element={<WorkspaceSummary />}
+            />
+            <Route
+              path="signals/contentmanagement"
+              element={<ContentManagementWorkspace />}
+            />
+            <Route
+              path="contentmanagement/details"
+              element={<ContentDetailView />}
+            />
+          </Route>
+        </Routes>
+      </Router>
+    </RoleProvider>
   );
 };
 

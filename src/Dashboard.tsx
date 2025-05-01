@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Search,
   User,
@@ -25,20 +25,20 @@ import {
 import { Outlet, useNavigate } from "react-router-dom";
 import NotificationPopover from "./NotificationPopover";
 import Assistant from "./CreateZone/Assistant";
+import { useRole } from "./context/RoleProvider";
 
 const Dashboard = () => {
   const [activeSidebarItem, setActiveSidebarItem] = useState("Dashboard");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const { role, setRole, rolePermissions } = useRole();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isAssistantDrawerOpen, setIsAssistantDrawerOpen] = useState(false); // New state for Assistant Drawer
-
-  const toggleAssistantDrawer = () => {
-    setIsAssistantDrawerOpen(!isAssistantDrawerOpen);
-  };
+  const [isAssistantDrawerOpen, setIsAssistantDrawerOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("recent");
   const [searchQuery, setSearchQuery] = useState("");
+
   const [pinnedItems, setPinnedItems] = useState([
     {
       id: "pin1",
@@ -58,7 +58,6 @@ const Dashboard = () => {
     },
   ]);
 
-  // Mock data for memory items
   const memoryItems = [
     {
       id: "mem1",
@@ -126,7 +125,6 @@ const Dashboard = () => {
     },
   ];
 
-  // Filter items based on search query
   const filteredItems = searchQuery
     ? memoryItems.filter(
         (item) =>
@@ -139,6 +137,10 @@ const Dashboard = () => {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const toggleAssistantDrawer = () => {
+    setIsAssistantDrawerOpen(!isAssistantDrawerOpen);
   };
 
   const getTypeIcon = (type: string) => {
@@ -162,18 +164,15 @@ const Dashboard = () => {
     toneScore?: number;
     tags?: string[];
   }) => {
-    // Check if already pinned
     const isPinned = pinnedItems.some(
       (pinnedItem) => pinnedItem.id === item.id
     );
 
     if (isPinned) {
-      // Unpin
       setPinnedItems(
         pinnedItems.filter((pinnedItem) => pinnedItem.id !== item.id)
       );
     } else {
-      // Pin
       setPinnedItems([
         ...pinnedItems,
         {
@@ -192,18 +191,109 @@ const Dashboard = () => {
     return pinnedItems.some((item) => item.id === itemId);
   };
 
+  // Sidebar items with updated role-based visibility
+  const sidebarItems = [
+    {
+      title: "Dashboard",
+      icon: <Home size={18} className="mr-2" />,
+      path: "userdashboard",
+      roles: ["designer", "copywriter"],
+    },
+    {
+      title: "Dashboard",
+      icon: <Home size={18} className="mr-2" />,
+      path: "/dashboard/drift",
+      roles: ["legalflashqa", "strategist"],
+    },
+    {
+      title: "Dashboard",
+      icon: <Home size={18} className="mr-2" />,
+      path: "analytics",
+      roles: ["admin", "executive"],
+    },
+    {
+      title: "Visual Studio",
+      icon: <Code size={18} className="mr-2" />,
+      path: "visualstudio",
+      roles: ["designer", "admin", "executive"],
+    },
+    {
+      title: "Publish Zone",
+      icon: <Send size={18} className="mr-2" />,
+      path: "publishzone/export",
+      roles: ["copywriter", "admin", "executive"],
+      subItems: [
+        {
+          title: "Export Hub",
+          path: "/publishzone/export",
+          roles: ["copywriter", "admin", "executive"],
+        },
+        {
+          title: "CLI/SDK",
+          path: "/publishzone/cli",
+          roles: ["copywriter", "admin", "executive"],
+        },
+        {
+          title: "Protocol Viewer",
+          path: "/publishzone/protocol",
+          roles: ["copywriter", "admin", "executive"],
+        },
+      ],
+    },
+    {
+      title: "Admin Tools",
+      icon: <Settings size={18} className="mr-2" />,
+      path: "admintools/aiconfig",
+      roles: ["admin", "executive"],
+      subItems: [
+        {
+          title: "AI Config",
+          path: "/admintools/aiconfig",
+          roles: ["admin", "executive"],
+        },
+        {
+          title: "Access Control",
+          path: "/admintools/access",
+          roles: ["admin", "executive"],
+        },
+      ],
+    },
+    {
+      title: "Signals",
+      icon: <Signal size={18} className="mr-2" />,
+      path: "signals/contentmanagement",
+      roles: [
+        "designer",
+        "legalflashqa",
+        "strategist",
+        "copywriter",
+        "admin",
+        "executive",
+      ],
+    },
+  ];
+
+  // Filter sidebar items based on role
+  const filteredSidebarItems = sidebarItems.filter((item) =>
+    item.roles.includes(role)
+  );
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Memory Drawer Toggle Button */}
-      <button
-        className={`fixed right-0 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-indigo-600 text-white rounded-l-md shadow-md transition hover:bg-indigo-700 z-10 ${
-          isDrawerOpen ? "hidden" : "flex"
-        }`}
-        onClick={toggleDrawer}
-        aria-label="Open Memory Drawer"
-      >
-        <Brain className="w-6 h-6" />
-      </button>
+      {rolePermissions.canManageContent && (
+        <button
+          className={`fixed right-0 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-indigo-600 text-white rounded-l-md shadow-md transition hover:bg-indigo-700 z-10 ${
+            isDrawerOpen ? "hidden" : "flex"
+          }`}
+          onClick={toggleDrawer}
+          aria-label="Open Memory Drawer"
+        >
+          <Brain className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Assistant Drawer Toggle Button */}
       <button
         className={`fixed right-0 top-[calc(50%+4rem)] transform -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-green-600 text-white rounded-l-md shadow-md transition hover:bg-green-700 z-10 ${
           isAssistantDrawerOpen ? "hidden" : "flex"
@@ -215,284 +305,287 @@ const Dashboard = () => {
       </button>
 
       {/* Semantic Memory Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-20 ${
-          isDrawerOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Drawer Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <div className="flex items-center">
-              <Brain className="w-5 h-5 text-indigo-600 mr-2" />
-              <h2 className="text-lg font-medium text-gray-800">
-                Memory Drawer
-              </h2>
-            </div>
-            <button
-              className="text-gray-500 hover:text-gray-700"
-              onClick={toggleDrawer}
-              aria-label="Close Memory Drawer"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Search Bar */}
-          <div className="p-4 border-b border-gray-200">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search snippets, prompts, assets..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+      {rolePermissions.canManageContent && (
+        <div
+          className={`fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-20 ${
+            isDrawerOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex flex-col h-full">
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div className="flex items-center">
+                <Brain className="w-5 h-5 text-indigo-600 mr-2" />
+                <h2 className="text-lg font-medium text-gray-800">
+                  Memory Drawer
+                </h2>
+              </div>
+              <button
+                className="text-gray-500 hover:text-gray-700"
+                onClick={toggleDrawer}
+                aria-label="Close Memory Drawer"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Natural Language Prompt Examples */}
-            {!searchQuery && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200">
-                  Find last quarter's welcome email intro
-                </button>
-                <button className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200">
-                  Show legal disclaimers
-                </button>
+            {/* Search Bar */}
+            <div className="p-4 border-b border-gray-200">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search snippets, prompts, assets..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               </div>
-            )}
-          </div>
 
-          {/* Navigation Tabs */}
-          <div className="flex border-b border-gray-200">
-            <button
-              className={`flex-1 py-3 text-sm font-medium text-center ${
-                activeTab === "recent"
-                  ? "text-indigo-600 border-b-2 border-indigo-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-              onClick={() => setActiveTab("recent")}
-            >
-              <div className="flex items-center justify-center">
-                <Clock className="w-4 h-4 mr-1.5" />
-                Recent
-              </div>
-            </button>
-            <button
-              className={`flex-1 py-3 text-sm font-medium text-center ${
-                activeTab === "pinned"
-                  ? "text-indigo-600 border-b-2 border-indigo-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-              onClick={() => setActiveTab("pinned")}
-            >
-              <div className="flex items-center justify-center">
-                <Pin className="w-4 h-4 mr-1.5" />
-                Pinned
-              </div>
-            </button>
-            <button
-              className={`flex-1 py-3 text-sm font-medium text-center ${
-                activeTab === "all"
-                  ? "text-indigo-600 border-b-2 border-indigo-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-              onClick={() => setActiveTab("all")}
-            >
-              <div className="flex items-center justify-center">
-                <Filter className="w-4 h-4 mr-1.5" />
-                All Memory
-              </div>
-            </button>
-          </div>
-
-          {/* Memory Content */}
-          <div className="flex-grow overflow-y-auto p-4">
-            {activeTab === "pinned" && (
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-gray-700">
-                    Pinned Items
-                  </h3>
-                  <span className="text-xs text-gray-500">
-                    {pinnedItems.length} items
-                  </span>
+              {!searchQuery && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200">
+                    Find last quarter's welcome email intro
+                  </button>
+                  <button className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200">
+                    Show legal disclaimers
+                  </button>
                 </div>
+              )}
+            </div>
 
-                {pinnedItems.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <Pin className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                    <p>No pinned items yet</p>
-                    <p className="text-sm mt-1">
-                      Pin frequently used items for quick access
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {pinnedItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-start p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer group"
-                      >
-                        <div className="flex-shrink-0 mt-0.5">
-                          {getTypeIcon(item.type)}
-                        </div>
-                        <div className="ml-3 flex-grow min-w-0">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-sm font-medium text-gray-900 truncate">
-                              {item.title}
-                            </h4>
-                            <button
-                              className="text-yellow-500 hover:text-yellow-600"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handlePinItem(item);
-                              }}
-                            >
-                              <Star className="w-4 h-4 fill-current" />
-                            </button>
-                          </div>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Last used: {item.lastUsed} • Tone: {item.toneScore}
-                            /100
-                          </p>
-                          <div className="mt-1.5 flex flex-wrap gap-1">
-                            {item.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-
-            {(activeTab === "recent" || activeTab === "all" || searchQuery) && (
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-gray-700">
-                    {searchQuery
-                      ? "Search Results"
-                      : activeTab === "recent"
-                      ? "Recently Used"
-                      : "All Memory Items"}
-                  </h3>
-                  <span className="text-xs text-gray-500">
-                    {filteredItems.length} items
-                  </span>
+            {/* Navigation Tabs */}
+            <div className="flex border-b border-gray-200">
+              <button
+                className={`flex-1 py-3 text-sm font-medium text-center ${
+                  activeTab === "recent"
+                    ? "text-indigo-600 border-b-2 border-indigo-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveTab("recent")}
+              >
+                <div className="flex items-center justify-center">
+                  <Clock className="w-4 h-4 mr-1.5" />
+                  Recent
                 </div>
+              </button>
+              <button
+                className={`flex-1 py-3 text-sm font-medium text-center ${
+                  activeTab === "pinned"
+                    ? "text-indigo-600 border-b-2 border-indigo-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveTab("pinned")}
+              >
+                <div className="flex items-center justify-center">
+                  <Pin className="w-4 h-4 mr-1.5" />
+                  Pinned
+                </div>
+              </button>
+              <button
+                className={`flex-1 py-3 text-sm font-medium text-center ${
+                  activeTab === "all"
+                    ? "text-indigo-600 border-b-2 border-indigo-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveTab("all")}
+              >
+                <div className="flex items-center justify-center">
+                  <Filter className="w-4 h-4 mr-1.5" />
+                  All Memory
+                </div>
+              </button>
+            </div>
 
-                {filteredItems.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <Search className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                    <p>No items found</p>
-                    <p className="text-sm mt-1">
-                      Try different search terms or filters
-                    </p>
+            {/* Memory Content */}
+            <div className="flex-grow overflow-y-auto p-4">
+              {activeTab === "pinned" && (
+                <>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Pinned Items
+                    </h3>
+                    <span className="text-xs text-gray-500">
+                      {pinnedItems.length} items
+                    </span>
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    {(activeTab === "recent"
-                      ? filteredItems.slice(0, 5)
-                      : filteredItems
-                    ).map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-start p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer group"
-                      >
-                        <div className="flex-shrink-0 mt-0.5">
-                          {getTypeIcon(item.type)}
-                        </div>
-                        <div className="ml-3 flex-grow min-w-0">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-sm font-medium text-gray-900 truncate">
-                              {item.title}
-                            </h4>
-                            <button
-                              className={`${
-                                isItemPinned(item.id)
-                                  ? "text-yellow-500"
-                                  : "text-gray-400 opacity-0 group-hover:opacity-100"
-                              } hover:text-yellow-600`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handlePinItem(item);
-                              }}
-                            >
-                              <Star
-                                className={`w-4 h-4 ${
-                                  isItemPinned(item.id) ? "fill-current" : ""
-                                }`}
-                              />
-                            </button>
+
+                  {pinnedItems.length === 0 ? (
+                    <div className="text-center py-8 text-gray-500">
+                      <Pin className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                      <p>No pinned items yet</p>
+                      <p className="text-sm mt-1">
+                        Pin frequently used items for quick access
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {pinnedItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-start p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer group"
+                        >
+                          <div className="flex-shrink-0 mt-0.5">
+                            {getTypeIcon(item.type)}
                           </div>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Last used: {item.lastUsed} • Tone: {item.toneScore}
-                            /100
-                          </p>
-                          <div className="mt-1.5 flex flex-wrap gap-1">
-                            {item.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded"
+                          <div className="ml-3 flex-grow min-w-0">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-sm font-medium text-gray-900 truncate">
+                                {item.title}
+                              </h4>
+                              <button
+                                className="text-yellow-500 hover:text-yellow-600"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handlePinItem(item);
+                                }}
                               >
-                                #{tag}
-                              </span>
-                            ))}
+                                <Star className="w-4 h-4 fill-current" />
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Last used: {item.lastUsed} • Tone:{" "}
+                              {item.toneScore}/100
+                            </p>
+                            <div className="mt-1.5 flex flex-wrap gap-1">
+                              {item.tags.map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {activeTab === "recent" &&
-                  filteredItems.length > 5 &&
-                  !searchQuery && (
-                    <div className="mt-4 text-center">
-                      <button
-                        className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-                        onClick={() => setActiveTab("all")}
-                      >
-                        View all {filteredItems.length} items
-                      </button>
+                      ))}
                     </div>
                   )}
-              </>
-            )}
-          </div>
+                </>
+              )}
 
-          {/* Drawer Footer */}
-          <div className="border-t border-gray-200 p-4">
-            <div className="grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700">
-                <PlusCircle className="w-4 h-4 mr-1.5" />
-                Create Snippet
-              </button>
-              <button className="flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700">
-                <ExternalLink className="w-4 h-4 mr-1.5" />
-                Memory Zone
-              </button>
+              {(activeTab === "recent" ||
+                activeTab === "all" ||
+                searchQuery) && (
+                <>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-medium text-gray-700">
+                      {searchQuery
+                        ? "Search Results"
+                        : activeTab === "recent"
+                        ? "Recently Used"
+                        : "All Memory Items"}
+                    </h3>
+                    <span className="text-xs text-gray-500">
+                      {filteredItems.length} items
+                    </span>
+                  </div>
+
+                  {filteredItems.length === 0 ? (
+                    <div className="text-center py-8 text-gray-500">
+                      <Search className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                      <p>No items found</p>
+                      <p className="text-sm mt-1">
+                        Try different search terms or filters
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {(activeTab === "recent"
+                        ? filteredItems.slice(0, 5)
+                        : filteredItems
+                      ).map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-start p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer group"
+                        >
+                          <div className="flex-shrink-0 mt-0.5">
+                            {getTypeIcon(item.type)}
+                          </div>
+                          <div className="ml-3 flex-grow min-w-0">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-sm font-medium text-gray-900 truncate">
+                                {item.title}
+                              </h4>
+                              <button
+                                className={`${
+                                  isItemPinned(item.id)
+                                    ? "text-yellow-500"
+                                    : "text-gray-400 opacity-0 group-hover:opacity-100"
+                                } hover:text-yellow-600`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handlePinItem(item);
+                                }}
+                              >
+                                <Star
+                                  className={`w-4 h-4 ${
+                                    isItemPinned(item.id) ? "fill-current" : ""
+                                  }`}
+                                />
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Last used: {item.lastUsed} • Tone:{" "}
+                              {item.toneScore}/100
+                            </p>
+                            <div className="mt-1.5 flex flex-wrap gap-1">
+                              {item.tags.map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {activeTab === "recent" &&
+                    filteredItems.length > 5 &&
+                    !searchQuery && (
+                      <div className="mt-4 text-center">
+                        <button
+                          className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                          onClick={() => setActiveTab("all")}
+                        >
+                          View all {filteredItems.length} items
+                        </button>
+                      </div>
+                    )}
+                </>
+              )}
             </div>
 
-            {/* AI Suggestions */}
-            <div className="mt-4 border-t border-gray-200 pt-3">
-              <div className="text-xs text-gray-500 mb-2">AI Suggestions</div>
-              <div className="text-sm text-gray-700">
-                You've reused this asset 4 times—want to refresh it?
+            {/* Drawer Footer */}
+            <div className="border-t border-gray-200 p-4">
+              <div className="grid grid-cols-2 gap-3">
+                <button className="flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700">
+                  <PlusCircle className="w-4 h-4 mr-1.5" />
+                  Create Snippet
+                </button>
+                <button className="flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700">
+                  <ExternalLink className="w-4 h-4 mr-1.5" />
+                  Memory Zone
+                </button>
+              </div>
+
+              {/* AI Suggestions */}
+              <div className="mt-4 border-t border-gray-200 pt-3">
+                <div className="text-xs text-gray-500 mb-2">AI Suggestions</div>
+                <div className="text-sm text-gray-700">
+                  You've reused this asset 4 times—want to refresh it?
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-md">
@@ -502,75 +595,28 @@ const Dashboard = () => {
 
         <nav className="p-2">
           <ul>
-            {[
-              // "Home",
-              "Dashboard",
-              "Visual Studio",
-              // "Memory Zone",
-              "Publish Zone",
-              // "Analytics",
-              "Admin Tools",
-              "Signals",
-            ].map((item) => (
-              <li key={item} className="mb-1">
+            {filteredSidebarItems.map((item) => (
+              <li key={item.title} className="mb-1">
                 <button
                   className={`flex items-center w-full p-2 rounded text-left ${
-                    activeSidebarItem === item
+                    activeSidebarItem === item.title
                       ? "bg-indigo-100 text-indigo-700"
                       : "hover:bg-gray-100"
                   }`}
                   onClick={() => {
-                    setActiveSidebarItem(item);
-                    if (item === "Visual Studio") {
-                      navigate("visualstudio");
-                    }
-                    if (item === "Signals") {
-                      navigate("signals/contentmanagement");
-                    }
+                    setActiveSidebarItem(item.title);
+                    navigate(item.path);
                   }}
                 >
-                  {/* {item === "Home" && <Home size={18} className="mr-2" />} */}
-                  {item === "Dashboard" && <Home size={18} className="mr-2" />}
-                  {item === "Visual Studio" && (
-                    <Code size={18} className="mr-2" />
-                  )}
-                  {item === "Memory Zone" && (
-                    <Brain size={18} className="mr-2" />
-                  )}
-                  {item === "Publish Zone" && (
-                    <Send size={18} className="mr-2" />
-                  )}
-                  {item === "Analytics" && (
-                    <BarChart size={18} className="mr-2" />
-                  )}
-                  {item === "Admin Tools" && (
-                    <Settings size={18} className="mr-2" />
-                  )}
-                  {item === "Signals" && <Signal size={18} className="mr-2" />}
-                  {item}
+                  {item.icon}
+                  {item.title}
                 </button>
 
-                {activeSidebarItem === item && (
+                {activeSidebarItem === item.title && item.subItems && (
                   <ul className="ml-6 mt-1">
-                    {item === "Dashboard" &&
-                      [
-                        // {
-                        //   title: "Overview",
-                        //   path: "/overview",
-                        // },
-                        {
-                          title: "User Dashboard",
-                          path: "/userdashboard",
-                        },
-                        {
-                          title: "Strategist",
-                          path: "/drift",
-                        },
-                        {
-                          title: "Project Manager",
-                          path: "/analytics",
-                        },
-                      ].map((subItem) => (
+                    {item.subItems
+                      .filter((subItem) => subItem.roles.includes(role))
+                      .map((subItem) => (
                         <li key={subItem.title} className="mb-1">
                           <button
                             className="text-sm p-1 hover:text-indigo-700 w-full text-left"
@@ -582,141 +628,6 @@ const Dashboard = () => {
                           </button>
                         </li>
                       ))}
-
-                    {/* {item === "Memory Zone" &&
-                      [
-                        {
-                          title: "Semantic Engine",
-                          path: "/memoryzone/semanticengine",
-                        },
-                        {
-                          title: "Governance",
-                          path: "/memoryzone/governance",
-                        },
-                        {
-                          title: "Prompts",
-                          path: "/memoryzone/prompts",
-                        },
-                        {
-                          title: "Snippets",
-                          path: "/memoryzone/snippets",
-                        },
-                        { title: "Drift", path: "/memoryzone/drift" },
-                      ].map((subItem) => (
-                        <li key={subItem.title} className="mb-1">
-                          <button
-                            className="text-sm p-1 hover:text-indigo-700 w-full text-left"
-                            onClick={() =>
-                              navigate(`/dashboard${subItem.path}`)
-                            }
-                          >
-                            {subItem.title}
-                          </button>
-                        </li>
-                      ))} */}
-
-                    {item === "Publish Zone" &&
-                      [
-                        {
-                          title: "Export Hub",
-                          path: "/publishzone/export",
-                        },
-                        // {
-                        //   title: "Integration",
-                        //   path: "/publishzone/integration",
-                        // },
-                        {
-                          title: "CLI/SDK",
-                          path: "/publishzone/cli",
-                        },
-                        {
-                          title: "Protocol Viewer",
-                          path: "/publishzone/protocol",
-                        },
-                      ].map((subItem) => (
-                        <li key={subItem.title} className="mb-1">
-                          <button
-                            className="text-sm p-1 hover:text-indigo-700 w-full text-left"
-                            onClick={() =>
-                              navigate(`/dashboard${subItem.path}`)
-                            }
-                          >
-                            {subItem.title}
-                          </button>
-                        </li>
-                      ))}
-
-                    {/* {item === "Analytics" &&
-                      [
-                        {
-                          title: "Usage Dashboard",
-                          path: "/analytics/usagedashboard",
-                        },
-                        {
-                          title: "Audit Trail",
-                          path: "/analytics/audittrail",
-                        },
-                      ].map((subItem) => (
-                        <li key={subItem.title} className="mb-1">
-                          <button
-                            className="text-sm p-1 hover:text-indigo-700 w-full text-left"
-                            onClick={() =>
-                              navigate(`/dashboard${subItem.path}`)
-                            }
-                          >
-                            {subItem.title}
-                          </button>
-                        </li>
-                      ))} */}
-
-                    {item === "Admin Tools" &&
-                      [
-                        // {
-                        //   title: "Memory Management",
-                        //   path: "/admintools/memorymanageement",
-                        // },
-                        // {
-                        //   title: "Team Management",
-                        //   path: "/admintools/team",
-                        // },
-                        {
-                          title: "AI Config",
-                          path: "/admintools/aiconfig",
-                        },
-                        {
-                          title: "Access Control",
-                          path: "/admintools/access",
-                        },
-                      ].map((subItem) => (
-                        <li key={subItem.title} className="mb-1">
-                          <button
-                            className="text-sm p-1 hover:text-indigo-700 w-full text-left"
-                            onClick={() =>
-                              navigate(`/dashboard${subItem.path}`)
-                            }
-                          >
-                            {subItem.title}
-                          </button>
-                        </li>
-                      ))}
-                    {/* {item === "Signals" &&
-                      [
-                        {
-                          title: "Content Management",
-                          path: "/signals/contentmanagement",
-                        },
-                      ].map((subItem) => (
-                        <li key={subItem.title} className="mb-1">
-                          <button
-                            className="text-sm p-1 hover:text-indigo-700 w-full text-left"
-                            onClick={() =>
-                              navigate(`/dashboard${subItem.path}`)
-                            }
-                          >
-                            {subItem.title}
-                          </button>
-                        </li>
-                      ))} */}
                   </ul>
                 )}
               </li>
@@ -724,6 +635,8 @@ const Dashboard = () => {
           </ul>
         </nav>
       </div>
+
+      {/* Assistant Drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-20 ${
           isAssistantDrawerOpen ? "translate-x-0" : "translate-x-full"
@@ -743,12 +656,12 @@ const Dashboard = () => {
               <X className="w-5 h-5" />
             </button>
           </div>
-          {/* Render Assistant Component */}
           <div className="flex-1 overflow-y-auto p-4">
             <Assistant />
           </div>
         </div>
       </div>
+
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         {/* Header */}
@@ -767,30 +680,124 @@ const Dashboard = () => {
               {dropdownOpen && (
                 <div className="absolute mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
                   <ul>
-                    <li
-                      className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        navigate("/dashboard/admintools/access/wizard");
-                        setDropdownOpen(false); // Close the dropdown
-                      }}
-                    >
-                      <PlusCircle size={16} className="mr-2 text-indigo-500" />
-                      Create New Board
-                    </li>
+                    {(role === "admin" || role === "executive") && (
+                      <li
+                        className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => {
+                          navigate("/dashboard/admintools/access/wizard");
+                          setDropdownOpen(false);
+                        }}
+                      >
+                        <PlusCircle
+                          size={16}
+                          className="mr-2 text-indigo-500"
+                        />
+                        Create New Board
+                      </li>
+                    )}
                   </ul>
                 </div>
               )}
             </div>
 
-            {/* Edit Button */}
-            <div>
+            {/* Edit Button - Only visible to admins */}
+            {rolePermissions.canEdit && (
+              <div>
+                <button
+                  className="flex items-center px-3 py-2 bg-white border rounded-md shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  onClick={() =>
+                    navigate("/dashboard/admintools/access/wizard")
+                  }
+                >
+                  <Settings size={16} className="mr-1" />
+                  Edit
+                </button>
+              </div>
+            )}
+
+            {/* Role Switcher */}
+            <div className="relative">
               <button
-                className="flex items-center px-3 py-2 bg-white border rounded-md shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                onClick={() => navigate("/dashboard/admintools/access/wizard")}
+                onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+                aria-expanded={isPopoverOpen}
+                className="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed focus:shadow-none text-sm py-2 px-4 shadow-sm hover:shadow-md bg-stone-800 hover:bg-stone-700 relative bg-gradient-to-b from-stone-700 to-stone-800 border-stone-900 text-stone-50 rounded-lg hover:bg-gradient-to-b hover:from-stone-800 hover:to-stone-800 hover:border-stone-900 after:absolute after:inset-0 after:rounded-[inherit] after:box-shadow after:shadow-[inset_0_1px_0px_rgba(255,255,255,0.25),inset_0_-2px_0px_rgba(0,0,0,0.35)] after:pointer-events-none transition antialiased"
               >
-                <Settings size={16} className="mr-1" />
-                Edit
+                {role.charAt(0).toUpperCase() + role.slice(1)}
               </button>
+
+              {isPopoverOpen && (
+                <div
+                  className="absolute mt-2 bg-white border border-stone-200 rounded-lg shadow-sm p-1 z-10"
+                  style={{ top: "100%", left: "0" }}
+                >
+                  <button
+                    onClick={() => {
+                      setRole("admin");
+                      setIsPopoverOpen(false);
+                    }}
+                    className={`block w-full px-4 py-2 text-sm text-stone-800 hover:bg-stone-100 rounded-md text-left ${
+                      role === "admin" ? "bg-stone-100 font-medium" : ""
+                    }`}
+                  >
+                    Admin
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRole("executive");
+                      setIsPopoverOpen(false);
+                    }}
+                    className={`block w-full px-4 py-2 text-sm text-stone-800 hover:bg-stone-100 rounded-md text-left ${
+                      role === "executive" ? "bg-stone-100 font-medium" : ""
+                    }`}
+                  >
+                    Executive
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRole("designer");
+                      setIsPopoverOpen(false);
+                    }}
+                    className={`block w-full px-4 py-2 text-sm text-stone-800 hover:bg-stone-100 rounded-md text-left ${
+                      role === "designer" ? "bg-stone-100 font-medium" : ""
+                    }`}
+                  >
+                    Designer
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRole("legalflashqa");
+                      setIsPopoverOpen(false);
+                    }}
+                    className={`block w-full px-4 py-2 text-sm text-stone-800 hover:bg-stone-100 rounded-md text-left ${
+                      role === "legalflashqa" ? "bg-stone-100 font-medium" : ""
+                    }`}
+                  >
+                    Legal Flash QA
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRole("strategist");
+                      setIsPopoverOpen(false);
+                    }}
+                    className={`block w-full px-4 py-2 text-sm text-stone-800 hover:bg-stone-100 rounded-md text-left ${
+                      role === "strategist" ? "bg-stone-100 font-medium" : ""
+                    }`}
+                  >
+                    Strategist
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRole("copywriter");
+                      setIsPopoverOpen(false);
+                    }}
+                    className={`block w-full px-4 py-2 text-sm text-stone-800 hover:bg-stone-100 rounded-md text-left ${
+                      role === "copywriter" ? "bg-stone-100 font-medium" : ""
+                    }`}
+                  >
+                    Copywriter
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Search Bar */}

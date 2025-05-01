@@ -16,7 +16,6 @@ import {
   ExternalLink,
   MessageCircle,
   Activity,
-  Link,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
