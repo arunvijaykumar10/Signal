@@ -203,7 +203,7 @@ const Dashboard = () => {
       title: "Dashboard",
       icon: <Home size={18} className="mr-2" />,
       path: "/dashboard/drift",
-      roles: ["legalflashqa", "strategist"],
+      roles: ["legal/qa", "strategist"],
     },
     {
       title: "Dashboard",
@@ -264,7 +264,7 @@ const Dashboard = () => {
       path: "signals/contentmanagement",
       roles: [
         "designer",
-        "legalflashqa",
+        "legal/qa",
         "strategist",
         "copywriter",
         "admin",
@@ -722,7 +722,9 @@ const Dashboard = () => {
                 aria-expanded={isPopoverOpen}
                 className="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed focus:shadow-none text-sm py-2 px-4 shadow-sm hover:shadow-md bg-stone-800 hover:bg-stone-700 relative bg-gradient-to-b from-stone-700 to-stone-800 border-stone-900 text-stone-50 rounded-lg hover:bg-gradient-to-b hover:from-stone-800 hover:to-stone-800 hover:border-stone-900 after:absolute after:inset-0 after:rounded-[inherit] after:box-shadow after:shadow-[inset_0_1px_0px_rgba(255,255,255,0.25),inset_0_-2px_0px_rgba(0,0,0,0.35)] after:pointer-events-none transition antialiased"
               >
-                {role.charAt(0).toUpperCase() + role.slice(1)}
+                {role === "legal/qa"
+                  ? "Legal / QA"
+                  : role.charAt(0).toUpperCase() + role.slice(1)}
               </button>
 
               {isPopoverOpen && (
@@ -765,11 +767,11 @@ const Dashboard = () => {
                   </button>
                   <button
                     onClick={() => {
-                      setRole("legalflashqa");
+                      setRole("legal/qa");
                       setIsPopoverOpen(false);
                     }}
                     className={`block w-full px-4 py-2 text-sm text-stone-800 hover:bg-stone-100 rounded-md text-left ${
-                      role === "legalflashqa" ? "bg-stone-100 font-medium" : ""
+                      role === "legal/qa" ? "bg-stone-100 font-medium" : ""
                     }`}
                   >
                     Legal / QA

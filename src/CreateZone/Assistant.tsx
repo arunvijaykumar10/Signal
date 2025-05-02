@@ -138,59 +138,55 @@ const Assistant = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-white border-t border-gray-200 p-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-end">
-              <div className="flex-1 relative">
-                <textarea
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-                  rows={2}
-                  placeholder="Type your message..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                />
-                <button
-                  className={`absolute right-3 bottom-3 p-1 rounded-full ${
-                    isRecording
-                      ? "bg-red-100 text-red-600"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                  onClick={() => setIsRecording(!isRecording)}
-                >
-                  <Mic size={18} />
-                </button>
-              </div>
+        <div className="flex gap-2 items-center">
+          <div className="relative flex-1">
+            <textarea
+              className="w-full p-3 pr-10 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 resize-none text-sm"
+              rows={2}
+              placeholder="Type your message..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button
+              className={`absolute right-3 bottom-3 p-1 rounded-full ${
+                isRecording
+                  ? "bg-red-100 text-red-600"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+              onClick={() => setIsRecording(!isRecording)}
+            >
+              <Mic size={20} />
+            </button>
+          </div>
 
-              <button
-                className="ml-3 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-                onClick={handleSendMessage}
-              >
-                <Send size={18} />
-              </button>
-            </div>
+          <button
+            className="flex items-center justify-center px-4 py-3 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition"
+            onClick={handleSendMessage}
+          >
+            <Send size={26} className="mr-1" />
+            Send
+          </button>
+        </div>
+        <div className="flex justify-between mt-3">
+          <div className="flex space-x-2">
+            <button className="flex items-center text-xs text-gray-500 hover:text-gray-700">
+              <Paperclip size={14} className="mr-1" />
+              Attach
+            </button>
+            <button className="flex items-center text-xs text-gray-500 hover:text-gray-700">
+              <Image size={14} className="mr-1" />
+              Image
+            </button>
+          </div>
 
-            <div className="flex justify-between mt-3">
-              <div className="flex space-x-2">
-                <button className="flex items-center text-xs text-gray-500 hover:text-gray-700">
-                  <Paperclip size={14} className="mr-1" />
-                  Attach
-                </button>
-                <button className="flex items-center text-xs text-gray-500 hover:text-gray-700">
-                  <Image size={14} className="mr-1" />
-                  Image
-                </button>
-              </div>
-
-              <div className="flex space-x-2">
-                <button className="px-2 py-1 text-xs bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100">
-                  Send to Draft Editor
-                </button>
-                <button className="px-2 py-1 text-xs bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100">
-                  Save as Snippet
-                </button>
-              </div>
-            </div>
+          <div className="flex space-x-2">
+            <button className="px-2 py-1 text-xs bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100">
+              Send to Draft Editor
+            </button>
+            <button className="px-2 py-1 text-xs bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100">
+              Save as Snippet
+            </button>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ type Role =
   | "admin"
   | "executive"
   | "designer"
-  | "legalflashqa"
+  | "legal/qa"
   | "strategist"
   | "copywriter";
 
@@ -31,7 +31,7 @@ export const RoleProvider = ({ children }: { children: ReactNode }) => {
   // Define permissions based on role
   const rolePermissions = {
     canEdit:
-      role === "legalflashqa" ||
+      role === "legal/qa" ||
       role === "strategist" ||
       role === "copywriter" ||
       role === "admin" ||
@@ -39,17 +39,17 @@ export const RoleProvider = ({ children }: { children: ReactNode }) => {
     canAccessAdmin: role === "admin" || role === "executive",
     canManageContent:
       role === "designer" ||
-      role === "legalflashqa" ||
+      role === "legal/qa" ||
       role === "strategist" ||
       role === "copywriter" ||
       role === "admin" ||
       role === "executive",
-    canAccessStrategist: role === "strategist" || role === "legalflashqa",
+    canAccessStrategist: role === "strategist" || role === "legal/qa",
     canAccessVisualStudio: role === "designer",
     canAccessPublishZone: role === "copywriter",
     canAccessSignals:
       role === "designer" ||
-      role === "legalflashqa" ||
+      role === "legal/qa" ||
       role === "strategist" ||
       role === "copywriter" ||
       role === "admin" ||
