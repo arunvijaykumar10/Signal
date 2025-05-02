@@ -37,7 +37,13 @@ export const RoleProvider = ({ children }: { children: ReactNode }) => {
       role === "admin" ||
       role === "executive",
     canAccessAdmin: role === "admin" || role === "executive",
-    canManageContent: role === "admin" || role === "executive",
+    canManageContent:
+      role === "designer" ||
+      role === "legalflashqa" ||
+      role === "strategist" ||
+      role === "copywriter" ||
+      role === "admin" ||
+      role === "executive",
     canAccessStrategist: role === "strategist" || role === "legalflashqa",
     canAccessVisualStudio: role === "designer",
     canAccessPublishZone: role === "copywriter",

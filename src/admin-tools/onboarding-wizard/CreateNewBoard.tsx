@@ -31,11 +31,11 @@ const CreateNewBoard = () => {
       case "executive":
         return allTabs;
       case "designer":
-        return []; // Don't show any tabs
+        return [];
       case "legalflashqa":
         return allTabs.filter(
           (tab) =>
-            tab.name !== "Tone & Governance" && tab.name !== "Governance Center"
+            tab.name == "Tone & Governance" || tab.name == "Governance Center"
         );
       case "strategist":
         return allTabs.filter((tab) => tab.name !== "Add User");

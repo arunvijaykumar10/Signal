@@ -772,7 +772,7 @@ const Dashboard = () => {
                       role === "legalflashqa" ? "bg-stone-100 font-medium" : ""
                     }`}
                   >
-                    Legal Flash QA
+                    Legal / QA
                   </button>
                   <button
                     onClick={() => {
